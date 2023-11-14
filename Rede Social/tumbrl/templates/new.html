@@ -1,0 +1,86 @@
+{% block head %}
+    <!-- Link para a fonte Open Sans -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+{% endblock %}
+
+{% block body %}
+<style>
+    /* Estilos CSS inline para o corpo e cabeçalho da página */
+    body, html {
+        height: 100%;
+        margin: 0;
+        overflow:auto; /* Remova a barra de rolagem vertical */
+        background-color: whitesmoke;
+    }
+
+    .container {
+        height: 100%;
+    }
+
+    /* Estilos para centralizar verticalmente o conteúdo */
+    .center-vertically {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    /* Estilos para centralizar o conteúdo dentro de um elemento */
+    .center-content {
+        text-align: center;
+    }
+
+    /* Adiciona uma margem personalizada abaixo do título */
+    .custom-title-margin {
+        margin-bottom: 20px; /* Ajuste conforme necessário para adicionar espaço abaixo do título */
+    }
+
+</style>
+
+<div class="container d-lg-table justify-content-center" style="height: 200vh;">
+    <!-- Div para centralizar o conteúdo verticalmente -->
+    <div>
+        <!-- Título do card de cadastro -->
+        <h2 class="card-title text-center">Cadastro</h2>
+        <!-- Formulário de cadastro -->
+        <form method="POST" class="mt-4">
+            {{ form.csrf_token }}
+
+            <!-- Campo de entrada para o e-mail -->
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-group") }}
+            </div>
+
+            <!-- Campo de entrada para o nome de usuário -->
+            <div class="form-group">
+                {{ form.usarname.label(class="form-label") }}
+                {{ form.usarname(class="form-group") }}
+            </div>
+
+            <!-- Campo de entrada para a senha -->
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-group") }}
+            </div>
+
+            <!-- Campo de confirmação de senha -->
+            <div class="form-group">
+                {{ form.checkPassword.label(class="form-label") }}
+                {{ form.checkPassword(class="form-group") }}
+            </div>
+
+            <!-- Botão de submissão do formulário -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-secondary btn-secondary">{{ form.btn.label.text }}</button>
+            </div>
+            
+            <!-- Link para voltar para a página de login --> 
+            <div class="mt-3 text-dark">
+                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary">Voltar para o Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

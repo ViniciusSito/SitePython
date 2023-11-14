@@ -1,0 +1,80 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+</head>
+
+{% block body %}
+    <!-- Estilos personalizados -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow:auto;
+            background-color: whitesmoke;
+        }
+
+        .container {
+            height: 100%;
+        }
+
+        .center-vertically {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .center-content {
+            text-align: center;
+        }
+
+        .custom-title-margin {
+            margin-bottom: 20px; 
+        }
+
+    </style>
+
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Social's</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-secondary mr-2" href="{{ url_for('logout') }}">Sair</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-secondary" href="{{ url_for('profile', user_id=current_user.id) }}">Meu Perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <div class="container mt-4">
+        <div class="row justify-content-between">
+            <div class="col-md-8">
+                {% block content %}
+                <!-- Feed de postagens -->
+                <div class="feed">
+                    {% for postagem in postagens %}
+                        <div class="post mb-4 pb-2 border-bottom">
+                            <h2 class="username">{{ postagem.user.username }}</h2>
+                            <img class="img-thumbnail img-fluid mb-3" src="{{ url_for('static', filename='fotos/' ~ postagem.post_img) }}" alt="Imagem da postagem" style="max-height: 400px; width: auto;">
+                            <p>{{ postagem.post_text }}</p>
+                            <form action="{{ url_for('like_post', post_id=postagem.id) }}" method="post">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Curtir</button>
+                                <span>{{ postagem.likes }} curtidas</span>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>    
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

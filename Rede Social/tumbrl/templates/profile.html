@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% block body %}
+<div>
+    <div class="row justify-content-between">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <!-- Título de boas-vindas com o nome do usuário -->
+            <h1 class="text-center mb-4 text-quinary">Bem-Vindo, {{ user.username }}!</h1>
+            
+            <!-- Botão para voltar para o feed principal -->
+            <div class="d-flex justify-content-between mb-4">
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">Voltar</a>
+            </div>
+
+            <!-- Verifica se há um formulário (form) presente -->
+            {% if form %}
+            <!-- Card para fazer uma nova publicação -->
+            <div class="card mb-5">
+                <!-- Cabeçalho do card -->
+                <div class="card-header text-white bg-dark border-0">
+                    <!-- Título para criar uma nova publicação -->
+                    <h2 class="text-quaternary">Publique algo</h2>
+                </div>
+                
+                <!-- Corpo do card -->
+                <div class="card-body badge-light">
+                    <!-- Formulário para criar uma nova publicação -->
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {{ form.csrf_token }}
+                        
+                        <!-- Campo para inserção do texto da publicação -->
+                        <div class="form-group">
+                            {{ form.text.label(class="form-label text-quaternary") }}
+                            {{ form.text(class="form-group") }}
+                        </div>
+
+                        <!-- Campo para upload de imagem -->
+                        <div class="form-group">
+                            {{ form.photo.label(class="form-label text-tertiary") }}
+                            {{ form.photo(class="form-control-file") }}
+                        </div>
+
+                        <!-- Botão para enviar o formulário -->
+                        <div class="d-grid gap-2">
+                            {{ form.btn(class="btn btn-outline-secondary btn-lg btn-block") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Loop através dos posts do usuário -->
+            {% for post in user.posts %}
+            <div>
+                <!-- Corpo do card para exibir um post -->
+                <div class="card-body bg-light">
+                    <!-- Texto do post -->
+                    <p class="card-text">{{ post.post_text }}</p>
+                    
+                    <!-- Verifica se há uma imagem associada ao post -->
+                    {% if post.post_img %}
+                    <!-- Exibe a imagem do post -->
+                    <img class="img-thumbnail rounded mb-3" src="{{ url_for('static', filename='fotos/' ~ post.post_img) }}" alt="Imagem do post">
+                    {% endif %}
+                </div>
+                
+                <!-- Corpo do card com formulário para deletar o post -->
+                <div class="card-body bg-light">
+                    <!-- Formulário para deletar o post -->
+                    <form method="post" action="{{ url_for('delete_post', post_id=post.id) }}">
+                        <!-- Botão para deletar o post -->
+                        <button type="submit" class="btn btn-danger">Deletar Post</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
